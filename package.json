@@ -1,0 +1,20 @@
+{
+  "name": "mitmarine",
+  "version": "1.0.0",
+  "description": "man in the middle mcbe",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "HerryYT",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^14.14.22"
+  },
+  "dependencies": {
+    "@jsprismarine/prismarine": "^0.1.0-rc.34",
+    "i": "^0.3.6",
+    "npm": "^6.14.11"
+  }
+}
