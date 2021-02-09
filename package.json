@@ -15,6 +15,6 @@
   "dependencies": {
     "@jsprismarine/prismarine": "^0.1.0-rc.34",
     "i": "^0.3.6",
-    "npm": "^6.14.11"
+    "npm": "^7.0.0"
   }
 }
