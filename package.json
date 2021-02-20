@@ -13,7 +13,7 @@
     "@types/node": "14.14.22"
   },
   "dependencies": {
-    "@jsprismarine/prismarine": "^0.1.0-rc.34",
+    "@jsprismarine/prismarine": "^0.1.0-rc.41",
     "i": "^0.3.6",
     "npm": "^7.0.0"
   }
