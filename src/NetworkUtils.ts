@@ -1,14 +1,9 @@
-import ACK from '@jsprismarine/prismarine/dist/src/network/raknet/protocol/ACK';
 import BinaryStream from '@jsprismarine/jsbinaryutils/dist/BinaryStream';
-import BitFlags from '@jsprismarine/prismarine/dist/src/network/raknet/protocol/BitFlags';
-import Chunk from '@jsprismarine/prismarine/dist/src/world/chunk/Chunk';
-import DataPacket from '@jsprismarine/prismarine/dist/src/network/raknet/protocol/DataPacket';
-import EncapsulatedPacket from '@jsprismarine/prismarine/dist/src/network/raknet/protocol/EncapsulatedPacket';
+import { EncapsulatedPacket, DataPacket, ACK, NACK, BitFlags } from '@jsprismarine/raknet/dist/protocol/Protocol';
 import IConnection from './IConnection';
-import NACK from '@jsprismarine/prismarine/dist/src/network/raknet/protocol/NACK';
-import PacketRegistry from '@jsprismarine/prismarine/dist/src/network/PacketRegistry';
+import PacketRegistry from '@jsprismarine/prismarine/dist/network/PacketRegistry';
 import ProxyServer from './ProxyServer';
-import Server from '@jsprismarine/prismarine/dist/src/Server';
+import Server from '@jsprismarine/prismarine/dist/Server';
 import TempBatchPacket from './TempBatchPacket';
 
 export default class NetworkUtils {
@@ -50,7 +45,7 @@ export default class NetworkUtils {
                 for (let packet of datagram.packets) {
                     const encapsulated = this.retrivePacket(packet);
                     if (encapsulated !== null) {
-                        this.decodeBatch(encapsulated);
+                        return this.decodeBatch(encapsulated);
                     }
                 }
             }
@@ -72,6 +67,7 @@ export default class NetworkUtils {
         
         for (const buf of batched.getPackets()) {
             const pid = buf[0];
+
             // if (!this.packetRegistry.getPackets().has(pid)) {
             //    continue;
             // }

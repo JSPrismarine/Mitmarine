@@ -1,5 +1,5 @@
 import BinaryStream from '@jsprismarine/jsbinaryutils/dist/BinaryStream';
-import DataPacket from '@jsprismarine/prismarine/dist/src/network/packet/DataPacket';
+import DataPacket from '@jsprismarine/prismarine/dist/network/packet/DataPacket';
 import Zlib from 'zlib';
 
 export default class TempBatchPacket extends DataPacket {
@@ -7,6 +7,9 @@ export default class TempBatchPacket extends DataPacket {
 
     private payload = Buffer.alloc(0);
     private readonly compressionLevel: number = 7;
+
+    private senderId!: number;
+    private clientId!: number;
 
     public constructor(buffer?: Buffer) {
         super(buffer);
@@ -22,7 +25,7 @@ export default class TempBatchPacket extends DataPacket {
     public decodePayload(): void {
         try {
             this.payload = Zlib.inflateRawSync(this.readRemaining(), {
-                chunkSize: 1024 * 1024 * 2
+                chunkSize: 1024 * 1024 * 12
             });
         } catch {
             this.payload = Buffer.alloc(0);
@@ -55,6 +58,14 @@ export default class TempBatchPacket extends DataPacket {
         while (!stream.feof()) {
             const length = stream.readUnsignedVarInt();
             const buffer = stream.read(length);
+
+            const packetStream = new BinaryStream(buffer);
+            const header = packetStream.readUnsignedVarInt();
+            this.senderId = ((header >>> 10) & 3);
+            this.clientId = ((header >>> 12) & 3);
+
+            console.log(this.clientId, this.senderId);
+
             packets.push(buffer);
         }
 

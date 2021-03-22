@@ -1,4 +1,4 @@
-import LevelChunkPacket from '@jsprismarine/prismarine/dist/src/network/packet/LevelChunkPacket';
+import LevelChunkPacket from '@jsprismarine/prismarine/dist/network/packet/LevelChunkPacket';
 
 export default class TempLevelChunkPacket extends LevelChunkPacket {
     

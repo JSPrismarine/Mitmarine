@@ -1,6 +1,7 @@
 import IConnection from './IConnection';
-import InetAddress from '@jsprismarine/prismarine/dist/src/network/raknet/utils/InetAddress';
+import InetAddress from '@jsprismarine/raknet/dist/utils/InetAddress';
 import ProxyServer from './ProxyServer';
+import TempInetAddress from './TempInetAddress';
 
 export default class UpstreamConnection implements IConnection {
     private address: InetAddress;
@@ -8,9 +9,15 @@ export default class UpstreamConnection implements IConnection {
     // For connected mean handled offline packets
     private connected: boolean = false;
 
-    public constructor(address: InetAddress, server: ProxyServer) {
-        this.address = address;
+    public lastPingTime: number;
+    public lastCachedPong: Buffer;
+
+    public constructor(address: string, port: number, server: ProxyServer) {
+        this.address = new TempInetAddress(address, port);
         this.server = server;
+        
+        this.lastPingTime = Date.now();
+        this.lastCachedPong = Buffer.alloc(0);
     }
 
     public setConnected(val: boolean = true): void {
