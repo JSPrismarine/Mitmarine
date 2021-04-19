@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "@jsprismarine/prismarine": "^0.1.0-rc.48",
-    "npm": "^7.0.0"
+    "npm": "^7.5.3"
   }
 }
