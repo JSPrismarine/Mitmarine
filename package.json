@@ -11,7 +11,7 @@
   "author": "HerryYT",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "14.14.35"
+    "@types/node": "16.11.27"
   },
   "dependencies": {
     "@jsprismarine/prismarine": "^0.1.0-rc.48",
