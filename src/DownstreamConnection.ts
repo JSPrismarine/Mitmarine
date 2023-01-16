@@ -1,6 +1,6 @@
-import IConnection from './IConnection';
-import InetAddress from '@jsprismarine/raknet/dist/utils/InetAddress';
-import ProxyServer from './ProxyServer';
+import IConnection from './IConnection.js';
+import { InetAddress } from './jsprismarine/packages/raknet/src/RakNet.js';
+import ProxyServer from './ProxyServer.js';
 
 export default class DownstreamConnection implements IConnection {
     private address: InetAddress;

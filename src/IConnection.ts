@@ -1,4 +1,4 @@
-import InetAddress from '@jsprismarine/raknet/dist/utils/InetAddress';
+import { InetAddress } from './jsprismarine/packages/raknet/src/RakNet.js';
 
 export default interface IConnection {
     getAddress(): InetAddress;

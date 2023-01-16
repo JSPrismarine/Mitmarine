@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "@jsprismarine/nbt": "./dist/jsprismarine/packages/nbt/src/NBT.js",
+    "@jsprismarine/color-parser": "./dist/jsprismarine/packages/color-parser/src/Parser.js",
+    "@jsprismarine/raknet": "./dist/jsprismarine/packages/raknet/src/RakNet.js",
+    "graceful-fs": "./src/jsprismarine/node_modules/graceful-fs/graceful-fs.js",
+    "fast-jwt": "./src/jsprismarine/node_modules/fast-jwt/src/index.js",
+    "pino": "./src/jsprismarine/node_modules/pino/pino.js",
+    "simplex-noise": "./src/jsprismarine/node_modules/simplex-noise/dist/esm/simplex-noise.js"
+  }
+}

@@ -1,7 +1,7 @@
-import IConnection from './IConnection';
-import InetAddress from '@jsprismarine/raknet/dist/utils/InetAddress';
-import ProxyServer from './ProxyServer';
-import TempInetAddress from './TempInetAddress';
+import IConnection from './IConnection.js';
+import { InetAddress } from './jsprismarine/packages/raknet/src/RakNet.js';
+import ProxyServer from './ProxyServer.js';
+import TempInetAddress from './TempInetAddress.js';
 
 export default class UpstreamConnection implements IConnection {
     private address: InetAddress;

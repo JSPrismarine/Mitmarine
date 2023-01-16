@@ -1,12 +1,12 @@
-import LevelChunkPacket from '@jsprismarine/prismarine/dist/network/packet/LevelChunkPacket';
+import { Protocol } from './jsprismarine/packages/prismarine/src/Prismarine.js';
 
-export default class TempLevelChunkPacket extends LevelChunkPacket {
+export default class TempLevelChunkPacket extends Protocol.Packets.LevelChunkPacket {
     
     public decodePayload() {
         this.chunkX = this.readVarInt();
         this.chunkZ = this.readVarInt();
         this.subChunkCount = this.readUnsignedVarInt();
-        this.readBool();  // Don't care
+        this.readBoolean();  // Don't care
         const len = this.readUnsignedVarInt();
         this.read(len);
     }

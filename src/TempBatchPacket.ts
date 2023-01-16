@@ -1,8 +1,8 @@
-import BinaryStream from '@jsprismarine/jsbinaryutils/dist/BinaryStream';
-import DataPacket from '@jsprismarine/prismarine/dist/network/packet/DataPacket';
+import BinaryStream from '@jsprismarine/jsbinaryutils';
+import { Protocol } from './jsprismarine/packages/prismarine/src/Prismarine.js';
 import Zlib from 'zlib';
 
-export default class TempBatchPacket extends DataPacket {
+export default class TempBatchPacket extends Protocol.Packets.DataPacket {
     public static NetID = 0xfe;
 
     private payload = Buffer.alloc(0);
@@ -37,17 +37,17 @@ export default class TempBatchPacket extends DataPacket {
     }
 
     public encodePayload(): void {
-        this.append(Zlib.deflateRawSync(this.payload, { level: this.compressionLevel }));
+        this.write(Zlib.deflateRawSync(this.payload, { level: this.compressionLevel }));
     }
 
-    public addPacket(packet: DataPacket): void {
+    public addPacket(packet: Protocol.Packets.DataPacket): void {
         if (!packet.getEncoded()) {
             packet.encode();
         }
 
         const stream = new BinaryStream();
         stream.writeUnsignedVarInt(packet.getBuffer().byteLength);
-        stream.append(packet.getBuffer());
+        stream.write(packet.getBuffer());
         this.payload = Buffer.concat([this.payload, stream.getBuffer()]);
     }
 

@@ -1,20 +1,21 @@
-import BinaryStream from '@jsprismarine/jsbinaryutils/dist/BinaryStream';
-import { EncapsulatedPacket, DataPacket, ACK, NACK, BitFlags } from '@jsprismarine/raknet/dist/protocol/Protocol';
-import IConnection from './IConnection';
-import PacketRegistry from '@jsprismarine/prismarine/dist/network/PacketRegistry';
-import ProxyServer from './ProxyServer';
-import Server from '@jsprismarine/prismarine/dist/Server';
-import TempBatchPacket from './TempBatchPacket';
+import BinaryStream from '@jsprismarine/jsbinaryutils';
+import { Protocol } from './jsprismarine/packages/raknet/src/RakNet.js';
+import IConnection from './IConnection.js';
+import PacketRegistry from './jsprismarine/packages/prismarine/src/network/PacketRegistry.js';
+import ProxyServer from './ProxyServer.js';
+import { Server } from './jsprismarine/packages/prismarine/src/Prismarine.js'
+import { Protocol as BEProtocol } from './jsprismarine/packages/prismarine/src/Prismarine.js';
+import ConnectionReqAcceptedFallback from './ConnectionReqAcceptedFallback.js';
 
 export default class NetworkUtils {
     private proxyServer: ProxyServer;
 
     public sendSeqNumber: number = 0;
 
-    private acks: ACK[] = [];
-    private nacks: NACK[] = [];
+    private acks: Protocol.ACK[] = [];
+    private nacks: Protocol.NACK[] = [];
 
-    private splits: Map<number, Map<number, EncapsulatedPacket>> = new Map();
+    private splits: Map<number, Map<number, Protocol.Frame>> = new Map();
 
     private packetRegistry: PacketRegistry;
 
@@ -29,44 +30,94 @@ export default class NetworkUtils {
         this.proxyServer.getSocket().send(buffer, 0, buffer.length, inetAddr.getPort(), inetAddr.getAddress());
     }
 
-    public readDataPacket(buffer: Buffer): DataPacket | null {
+    public readDataPacket(buffer: Buffer): Protocol.Frame[] | null {
+        console.log(buffer)
         const pid = buffer[0];
         // Check if is not a offline packet
-        if ((pid & BitFlags.VALID) !== 0) {
-            if (pid & BitFlags.ACK) {
-                const packet = new ACK(buffer);
+        if ((pid & Protocol.BitFlags.VALID) !== 0) {
+            if (pid & Protocol.BitFlags.ACK) {
+                const packet = new Protocol.ACK(buffer);
                 this.acks.push(packet);
-            } else if (pid & BitFlags.NACK) {
-                const packet = new NACK(buffer);
+            } else if (pid & Protocol.BitFlags.NACK) {
+                const packet = new Protocol.NACK(buffer);
                 this.nacks.push(packet);
             } else {
-                const datagram = new DataPacket(buffer);
+                const datagram = new Protocol.FrameSet(buffer);
                 datagram.decode();
-                for (let packet of datagram.packets) {
+                const frames: Protocol.Frame[] = [];
+                for (let packet of datagram.frames) {
                     const encapsulated = this.retrivePacket(packet);
                     if (encapsulated !== null) {
-                        return this.decodeBatch(encapsulated);
+                        frames.push(this.handleFrame(encapsulated));
                     }
                 }
+                return frames;
             }
         }
         return null;
     }
 
+    private handleFrame(frame: Protocol.Frame): Protocol.Frame {
+        const pid = frame.content[0];
+
+        switch (pid) {
+            case Protocol.MessageHeaders.CONNECTION_REQUEST_ACCEPTED:
+                let accepted = new Protocol.ConnectionRequestAccepted(frame.content);
+                let mocked = new Protocol.ConnectionRequestAccepted();
+                try {
+                    accepted.decode();
+                } catch {
+                    accepted = new ConnectionReqAcceptedFallback(frame.content);
+                    accepted.decode();
+                    mocked = new ConnectionReqAcceptedFallback();
+                }
+
+                mocked.acceptedTimestamp = accepted.acceptedTimestamp;
+                mocked.clientAddress = [...this.proxyServer.clients.values()][0].getAddress();
+                mocked.requestTimestamp = accepted.acceptedTimestamp;
+                mocked.encode();
+
+                const copyFrame = new Protocol.Frame();
+                copyFrame.fragmentId = frame.fragmentId;
+                copyFrame.fragmentIndex = frame.fragmentIndex;
+                copyFrame.fragmentSize = frame.fragmentSize;
+                copyFrame.reliability = frame.reliability;
+                copyFrame.sequenceIndex = frame.sequenceIndex;
+                copyFrame.reliableIndex = frame.reliability;
+                copyFrame.orderChannel = frame.orderChannel;
+                copyFrame.orderIndex = frame.orderIndex;
+                copyFrame.content = mocked.getBuffer();
+                return copyFrame;
+            default:
+                return frame;
+        }
+
+        // TODO: handle 0xfe
+
+        // switch (pid) {
+        //    case Protocol.MessageHeaders.CONNECTION_REQUEST:
+        //        const connReq = new Protocol.ConnectionRequest(frame.content);
+        //        connReq.decode()
+        // }
+    }
+
     // Small hack
-    public retrivePacket(packet: EncapsulatedPacket): null | EncapsulatedPacket {
-        if (packet.splitCount > 0) {
+    public retrivePacket(packet: Protocol.Frame): null | Protocol.Frame {
+        if (packet.fragmentSize > 0) {
             return this.decodeSplit(packet);
         }
         return packet;
     }
 
-    public decodeBatch(packet: EncapsulatedPacket): DataPacket | null {
-        const batched = new TempBatchPacket(packet.buffer);
+    public decodeBatch(packet: Protocol.Frame): Protocol.FrameSet | null {
+        console.log(packet.content)
+        const batched = new BEProtocol.Packets.BatchPacket(packet.content);
+        batched.compressed = false;
         batched.decode();
         
         for (const buf of batched.getPackets()) {
             const pid = buf[0];
+            console.log(pid)
 
             // if (!this.packetRegistry.getPackets().has(pid)) {
             //    continue;
@@ -88,30 +139,30 @@ export default class NetworkUtils {
         return null;
     }
 
-    public decodeSplit(packet: EncapsulatedPacket): EncapsulatedPacket | null {
+    public decodeSplit(packet: Protocol.Frame): Protocol.Frame | null {
         // Returns null if split packet is not ready (fully reassembled)
-        if (!this.splits.has(packet.splitId)) {
-            this.splits.set(packet.splitId, new Map([[packet.splitIndex, packet]]));
+        if (!this.splits.has(packet.fragmentId)) {
+            this.splits.set(packet.fragmentId, new Map([[packet.fragmentIndex, packet]]));
         } else {
-            const value = this.splits.get(packet.splitId)!;
-            value.set(packet.splitIndex, packet);
-            this.splits.set(packet.splitId, value);
+            const value = this.splits.get(packet.fragmentId)!;
+            value.set(packet.fragmentIndex, packet);
+            this.splits.set(packet.fragmentId, value);
         }
 
-        const localSplits = this.splits.get(packet.splitId)!;
-        if (localSplits.size === packet.splitCount) {
-            const pk = new EncapsulatedPacket();
+        const localSplits = this.splits.get(packet.fragmentId)!;
+        if (localSplits.size === packet.fragmentSize) {
+            const pk = new Protocol.Frame();
             pk.reliability = packet.reliability;
-            pk.messageIndex = packet.messageIndex;
+            pk.reliableIndex = packet.reliableIndex;
             pk.sequenceIndex = packet.sequenceIndex;
             pk.orderIndex = packet.orderIndex;
             pk.orderChannel = packet.orderChannel;
             const stream = new BinaryStream();
             Array.from(localSplits.values()).forEach((packet) => {
-                stream.append(packet.buffer);
+                stream.write(packet.content);
             });
-            this.splits.delete(packet.splitId);
-            pk.buffer = stream.getBuffer();
+            this.splits.delete(packet.fragmentId);
+            pk.content = stream.getBuffer();
             return pk;
         }
         return null;

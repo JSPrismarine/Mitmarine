@@ -3,3 +3,6 @@ dist
 jsprismarine.log
 proxy-config.yaml
 logs/*.log
+tsconfig.tsbuildinfo
+.vscode
+.idea

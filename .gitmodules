@@ -1,0 +1,3 @@
+[submodule "src/jsprismarine"]
+	path = src/jsprismarine
+	url = https://github.com/JSPrismarine/JSPrismarine

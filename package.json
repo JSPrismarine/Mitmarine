@@ -3,18 +3,44 @@
   "version": "1.0.0",
   "description": "man in the middle mcbe",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
+    "postinstall": "npx git-submodule-init && cd src/jsprismarine && npm i && npm run build",
+    "dev": "nodemon --watch \"./src\" -e ts --exec \"npm run build && npm run start\"",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node --experimental-loader @node-loader/import-maps dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "HerryYT",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "16.11.33"
+    "@jsprismarine/bedrock-data": "^1.19.50",
+    "@jsprismarine/brigadier": "0.2.0-rc.1",
+    "@jsprismarine/jsbinaryutils": "^5.4.3",
+    "@node-loader/import-maps": "^1.1.0",
+    "@types/node": "18.11.18",
+    "async-exit-hook": "^2.0.1",
+    "chalk": "^5.2.0",
+    "evt": "^2.4.13",
+    "fflate": "^0.7.4",
+    "git-rev-sync": "^3.0.2",
+    "git-submodule-utils": "^1.0.2",
+    "heap": "^0.2.7",
+    "live-plugin-manager": "^0.17.1",
+    "node-fetch": "^3.3.0",
+    "node-machine-id": "^1.1.12",
+    "set-interval-async": "^3.0.3",
+    "strip-json-comments": "^5.0.0",
+    "unzipper": "^0.10.11",
+    "winston": "^3.8.2",
+    "yaml": "^2.2.1"
   },
-  "dependencies": {
-    "@jsprismarine/prismarine": "^0.1.0-rc.48",
-    "npm": "^8.0.0"
-  }
+  "packageManager": "^pnpm@7.25.0",
+  "submodules": [
+    {
+      "path": "src/jsprismarine",
+      "url": "https://github.com/JSPrismarine/JSPrismarine",
+      "branch": "master"
+    }
+  ]
 }
