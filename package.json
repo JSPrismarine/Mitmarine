@@ -18,7 +18,7 @@
     "@jsprismarine/brigadier": "0.2.0-rc.1",
     "@jsprismarine/jsbinaryutils": "^5.4.3",
     "@node-loader/import-maps": "^1.1.0",
-    "@types/node": "18.11.18",
+    "@types/node": "18.11.19",
     "async-exit-hook": "^2.0.1",
     "chalk": "^5.2.0",
     "evt": "^2.4.13",

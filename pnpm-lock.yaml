@@ -5,7 +5,7 @@ specifiers:
   '@jsprismarine/brigadier': 0.2.0-rc.1
   '@jsprismarine/jsbinaryutils': ^5.4.3
   '@node-loader/import-maps': ^1.1.0
-  '@types/node': 18.11.18
+  '@types/node': 18.11.19
   async-exit-hook: ^2.0.1
   chalk: ^5.2.0
   evt: ^2.4.13
@@ -33,7 +33,7 @@ devDependencies:
   '@jsprismarine/brigadier': 0.2.0-rc.1
   '@jsprismarine/jsbinaryutils': 5.4.3
   '@node-loader/import-maps': 1.1.0
-  '@types/node': 18.11.18
+  '@types/node': 18.11.19
   async-exit-hook: 2.0.1
   chalk: 5.2.0
   evt: 2.4.13
@@ -93,7 +93,7 @@ packages:
   /@types/fs-extra/9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
-      '@types/node': 18.11.18
+      '@types/node': 18.11.19
     dev: true
 
   /@types/lockfile/1.0.2:
@@ -114,12 +114,12 @@ packages:
   /@types/node-fetch/2.6.2:
     resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
     dependencies:
-      '@types/node': 18.11.18
+      '@types/node': 18.11.19
       form-data: 3.0.1
     dev: true
 
-  /@types/node/18.11.18:
-    resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
+  /@types/node/18.11.19:
+    resolution: {integrity: sha512-YUgMWAQBWLObABqrvx8qKO1enAvBUdjZOAWQ5grBAkp5LQv45jBvYKZ3oFS9iKRCQyFjqw6iuEa1vmFqtxYLZw==}
     dev: true
 
   /@types/semver/7.3.13:
@@ -130,7 +130,7 @@ packages:
     resolution: {integrity: sha512-cgwPhNEabHaZcYIy5xeMtux2EmYBitfqEceBUi2t5+ETy4dW6kswt6WX4+HqLeiiKOo42EXbGiDmVJ2x+vi37Q==}
     dependencies:
       '@types/minipass': 3.3.5
-      '@types/node': 18.11.18
+      '@types/node': 18.11.19
     dev: true
 
   /@types/url-join/4.0.1:
