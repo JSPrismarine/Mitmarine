@@ -22,7 +22,7 @@
     "async-exit-hook": "^2.0.1",
     "chalk": "^5.2.0",
     "evt": "^2.4.13",
-    "fflate": "^0.7.4",
+    "fflate": "^0.8.0",
     "git-rev-sync": "^3.0.2",
     "git-submodule-utils": "^1.0.2",
     "heap": "^0.2.7",
