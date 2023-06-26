@@ -26,7 +26,7 @@
     "git-rev-sync": "^3.0.2",
     "git-submodule-utils": "^1.0.2",
     "heap": "^0.2.7",
-    "live-plugin-manager": "^0.17.1",
+    "live-plugin-manager": "^0.18.0",
     "node-fetch": "^3.3.0",
     "node-machine-id": "^1.1.12",
     "set-interval-async": "^3.0.3",
