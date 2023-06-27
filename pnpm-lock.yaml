@@ -13,7 +13,7 @@ specifiers:
   git-rev-sync: ^3.0.2
   git-submodule-utils: ^1.0.2
   heap: ^0.2.7
-  live-plugin-manager: ^0.17.1
+  live-plugin-manager: ^0.18.0
   node-fetch: ^3.3.0
   node-machine-id: ^1.1.12
   nodemon: ^2.0.20
@@ -41,7 +41,7 @@ devDependencies:
   git-rev-sync: 3.0.2
   git-submodule-utils: 1.0.2
   heap: 0.2.7
-  live-plugin-manager: 0.17.1
+  live-plugin-manager: 0.18.0
   node-fetch: 3.3.0
   node-machine-id: 1.1.12
   set-interval-async: 3.0.3
@@ -100,13 +100,6 @@ packages:
     resolution: {integrity: sha512-jD5VbvhfMhaYN4M3qPJuhMVUg3Dfc4tvPvLEAXn6GXbs/ajDFtCQahX37GIE65ipTI3I+hEvNaXS3MYAn9Ce3Q==}
     dev: true
 
-  /@types/minipass/3.3.5:
-    resolution: {integrity: sha512-M2BLHQdEmDmH671h0GIlOQQJrgezd1vNqq7PVj1VOsHZ2uQQb4iPiQIl0SlMdhxZPUsLIfEklmeEHXg8DJRewA==}
-    deprecated: This is a stub types definition. minipass provides its own type definitions, so you do not need this installed.
-    dependencies:
-      minipass: 4.0.0
-    dev: true
-
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
@@ -126,11 +119,11 @@ packages:
     resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
     dev: true
 
-  /@types/tar/4.0.5:
-    resolution: {integrity: sha512-cgwPhNEabHaZcYIy5xeMtux2EmYBitfqEceBUi2t5+ETy4dW6kswt6WX4+HqLeiiKOo42EXbGiDmVJ2x+vi37Q==}
+  /@types/tar/6.1.5:
+    resolution: {integrity: sha512-qm2I/RlZij5RofuY7vohTpYNaYcrSQlN2MyjucQc7ZweDwaEWkdN/EeNh6e9zjK6uEm6PwjdMXkcj05BxZdX1Q==}
     dependencies:
-      '@types/minipass': 3.3.5
       '@types/node': 18.11.18
+      minipass: 4.0.0
     dev: true
 
   /@types/url-join/4.0.1:
@@ -615,15 +608,15 @@ packages:
     resolution: {integrity: sha512-3mk/Zag0+IJxeDrxSgaDPy4zZ3w05PRZeJNnlWhzFz5OkX49J4krc+A8X2d2M69vGMBEX0uyl8M+W+8gH+kBqQ==}
     dev: true
 
-  /live-plugin-manager/0.17.1:
-    resolution: {integrity: sha512-gWAjojKD8AWkK8psxpm73q6JiSPeHJwwXjoSJL23CPwp/PejuetQjBWe0hGYBPb9kNYs6s6LA4SZVYuJwXDldg==}
+  /live-plugin-manager/0.18.0:
+    resolution: {integrity: sha512-iW2/pluBWG/1v+Wyy981Y/6/s/thhFem3lhnNaq8zh00HsVBYTE02Sz4ce0qVPGcUCTde344PTiRrJ0dw4nKCg==}
     dependencies:
       '@types/debug': 4.1.7
       '@types/fs-extra': 9.0.13
       '@types/lockfile': 1.0.2
       '@types/node-fetch': 2.6.2
       '@types/semver': 7.3.13
-      '@types/tar': 4.0.5
+      '@types/tar': 6.1.5
       '@types/url-join': 4.0.1
       debug: 4.3.4
       fs-extra: 10.1.0
